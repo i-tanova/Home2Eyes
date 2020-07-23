@@ -11,7 +11,7 @@ import com.ivanatanova.home2eye.R
 /**
  * A simple [Fragment] subclass.
  */
-class RegisterFragment : Fragment() {
+class RegisterFragment : BaseAuthFragment()  {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.fragment_launcher.*
 /**
  * A simple [Fragment] subclass.
  */
-class LauncherFragment : Fragment() {
+class LauncherFragment : BaseAuthFragment()  {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
