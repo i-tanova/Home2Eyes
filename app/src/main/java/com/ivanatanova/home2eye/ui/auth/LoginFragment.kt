@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 
 import com.ivanatanova.home2eye.R
 import com.ivanatanova.home2eye.model.AuthToken
+import com.ivanatanova.home2eye.ui.auth.state.AuthStateEvent
 import com.ivanatanova.home2eye.ui.auth.state.LoginFields
 import com.ivanatanova.home2eye.util.ApiEmptyResponse
 import com.ivanatanova.home2eye.util.ApiErrorResponse
@@ -33,7 +34,7 @@ class LoginFragment : BaseAuthFragment()  {
         super.onViewCreated(view, savedInstanceState)
         subscribeObservers()
         login_button.setOnClickListener{
-            viewModel.setAuthToken(AuthToken(2, "231234"))
+          viewModel.setStateEvent(AuthStateEvent.LoginAttemptEvent(input_email.text.toString(), input_password.text.toString()))
         }
     }
 

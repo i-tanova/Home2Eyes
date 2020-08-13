@@ -7,27 +7,27 @@ data class RegistrationResponse(
 
     @SerializedName("response")
     @Expose
-    var response: String,
+    var response: String?,
 
     @SerializedName("error_message")
     @Expose
-    var errorMessage: String,
+    var errorMessage: String?,
 
     @SerializedName("email")
     @Expose
-    var email: String,
+    var email: String?,
 
     @SerializedName("username")
     @Expose
-    var username: String,
+    var username: String?,
 
     @SerializedName("pk")
     @Expose
-    var pk: Int,
+    var pk: Int = -1,
 
     @SerializedName("token")
     @Expose
-    var token: String
+    var token: String?
 ) {
 
     override fun toString(): String {

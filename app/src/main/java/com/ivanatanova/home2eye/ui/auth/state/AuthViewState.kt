@@ -13,7 +13,6 @@ data class RegistrationFields(var registrationEmail: String? = null,
                               var registrationPassword: String? = null,
                               val registrationConfirmPassword: String? = null){
     class RegistrationError{
-
         companion object{
             fun mustFillAllFields() :String{
                 return "All fields are required"
