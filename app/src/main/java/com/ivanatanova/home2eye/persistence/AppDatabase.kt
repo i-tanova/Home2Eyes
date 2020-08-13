@@ -7,6 +7,7 @@ import com.ivanatanova.home2eye.model.AuthToken
 
 @Database(entities = [AuthToken::class, AccountProperties::class], version = 1)
 abstract class AppDatabase : RoomDatabase(){
+
     abstract fun getAuthTokenDao(): AuthTokenDao
 
     abstract fun getAccountPropertiesDao(): AccountPropertiesDao
