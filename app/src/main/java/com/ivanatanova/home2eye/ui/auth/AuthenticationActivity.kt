@@ -3,16 +3,13 @@ package com.ivanatanova.home2eye.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
 import com.ivanatanova.home2eye.BaseActivity
 import com.ivanatanova.home2eye.MainActivity
 import com.ivanatanova.home2eye.R
 import com.ivanatanova.home2eye.di.viewmodel.ViewModelProviderFactory
 import com.ivanatanova.home2eye.ui.ResponseType
-import kotlinx.android.synthetic.main.activity_auth.*
 import javax.inject.Inject
 
 
@@ -23,17 +20,16 @@ class AuthenticationActivity : BaseActivity() {
 
     lateinit var viewModel: AuthViewModel
 
-    val TAG = "Authentication"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
+
         viewModel = ViewModelProvider(this, providerFactory).get(AuthViewModel::class.java)
-        viewModel.viewState.observe(this, Observer {
-            if (it.authToken != null) {
-                navigateToMainActivity()
-            }
-        })
+
+        subscribeObservers()
+    }
+
+    private fun subscribeObservers(){
 
         viewModel.dataState.observe(this, Observer { dataState ->
             dataState.data?.let { data ->
@@ -53,7 +49,7 @@ class AuthenticationActivity : BaseActivity() {
                             }
 
                             is ResponseType.Toast ->{
-                                showSnackbar(autn_acitvity_layout, it.message!!)
+                                // show toast
                             }
 
                             is ResponseType.None ->{
@@ -64,41 +60,30 @@ class AuthenticationActivity : BaseActivity() {
                     }
                 }
             }
+        })
 
-            if(dataState.error != null){
-                dataState.error?.getContentIfNotHandled()?.let {
-                    when(it.response.responseType){
-                        is ResponseType.Dialog ->{
-                            // show dialog
-                        }
+        viewModel.viewState.observe(this, Observer{
+            Log.d(TAG, "AuthActivity, subscribeObservers: AuthViewState: ${it}")
+            it.authToken?.let{
+                sessionManager.login(it)
+            }
+        })
 
-                        is ResponseType.Toast ->{
-                            showSnackbar(autn_acitvity_layout, it.response.message!!)
-                        }
-
-                        is ResponseType.None ->{
-                            // print to log
-                            Log.e(TAG, "AuthActivity: Response: ${it.response.message}, ${it.response.responseType}" )
-                        }
-                    }
+        sessionManager.cachedToken.observe(this, Observer{ dataState ->
+            Log.d(TAG, "AuthActivity, subscribeObservers: AuthDataState: ${dataState}")
+            dataState.let{ authToken ->
+                if(authToken != null && authToken.account_pk != -1 && authToken.token != null){
+                    navMainActivity()
                 }
             }
         })
     }
 
-    private fun navigateToMainActivity() {
+    fun navMainActivity(){
+        Log.d(TAG, "navMainActivity: called.")
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
-    }
-
-    private fun showSnackbar(view: View, message: String) {
-        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-//            .setAction("CLOSE", object : OnClickListener() {
-//                fun onClick(view: View?) {}
-//            })
-            //.setActionTextColor(resources.getColor(R.color.holo_red_light))
-            .show()
     }
 
 }

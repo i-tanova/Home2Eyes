@@ -20,7 +20,38 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class AuthViewModel @Inject
-constructor(val authRepository: AuthRepository, val sessionManager: SessionManager) : BaseViewModel<AuthStateEvent, AuthViewState>(){
+constructor(val authRepository: AuthRepository) : BaseViewModel<AuthStateEvent, AuthViewState>(){
+
+    override fun handleStateEvent(stateEvent: AuthStateEvent): LiveData<DataState<AuthViewState>> {
+        when(stateEvent){
+
+            is AuthStateEvent.LoginAttemptEvent -> {
+                return authRepository.login(
+                    stateEvent.email,
+                    stateEvent.password
+                )
+            }
+
+            is AuthStateEvent.RegisterAttemptEvent -> {
+                return authRepository.register(
+                    stateEvent.email,
+                    stateEvent.username,
+                    stateEvent.password,
+                    stateEvent.confirmPassword
+                )
+            }
+
+            is AuthStateEvent.CheckPreviousAuthEvent -> {
+                return AbsentLiveData.create()
+            }
+
+
+        }
+    }
+
+    override fun initNewViewState(): AuthViewState {
+        return AuthViewState()
+    }
 
     fun setRegistrationFields(registrationFields: RegistrationFields){
         val update = getCurrentViewStateOrNew()
@@ -45,28 +76,7 @@ constructor(val authRepository: AuthRepository, val sessionManager: SessionManag
         if(update.authToken == authToken){
             return
         }
-        viewModelScope.launch {
-            sessionManager.login(authToken)
-        }
         update.authToken = authToken
         _viewState.value = update
-    }
-
-    override fun handleStateEvent(stateEvent: AuthStateEvent): LiveData<DataState<AuthViewState>> {
-       when(stateEvent){
-           is AuthStateEvent.LoginAttemptEvent -> {
-              return authRepository.login(stateEvent.email, stateEvent.password)
-           }
-           is AuthStateEvent.RegisterAttemptEvent ->{
-               return authRepository.register(stateEvent.email, stateEvent.username, stateEvent.password, stateEvent.confirmPassword)
-           }
-           is AuthStateEvent.CheckPreviousAuthEvent ->{
-               return AbsentLiveData.create()
-           }
-       }
-    }
-
-    override fun initNewViewState(): AuthViewState {
-        return AuthViewState()
     }
 }
