@@ -1,10 +1,9 @@
 package com.ivanatanova.home2eye.api.auth
 
 import androidx.lifecycle.LiveData
-import com.ivanatanova.home2eye.api.auth.networkresponse.LoginResponse
-import com.ivanatanova.home2eye.api.auth.networkresponse.RegistrationResponse
+import com.ivanatanova.home2eye.api.auth.network_responses.LoginResponse
+import com.ivanatanova.home2eye.api.auth.network_responses.RegistrationResponse
 import com.ivanatanova.home2eye.util.GenericApiResponse
-import com.ivanatanova.home2eye.util.LiveDataCallAdapterFactory
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST

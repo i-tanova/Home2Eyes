@@ -3,11 +3,10 @@ package com.ivanatanova.home2eye.session
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
-import android.os.Build.VERSION_CODES.M
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ivanatanova.home2eye.model.AuthToken
+import com.ivanatanova.home2eye.models.AuthToken
 import com.ivanatanova.home2eye.persistence.AuthTokenDao
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
@@ -16,8 +15,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SessionManager @Inject
-constructor(val authTokenDao: AuthTokenDao, val application: Application) {
+class SessionManager
+@Inject
+constructor(
+    val authTokenDao: AuthTokenDao,
+    val application: Application
+) {
 
     private val TAG: String = "AppDebug"
 
@@ -32,6 +35,7 @@ constructor(val authTokenDao: AuthTokenDao, val application: Application) {
 
     fun logout(){
         Log.d(TAG, "logout: ")
+
 
         CoroutineScope(IO).launch{
             var errorMessage: String? = null
@@ -73,5 +77,6 @@ constructor(val authTokenDao: AuthTokenDao, val application: Application) {
         }
         return false
     }
+
 
 }

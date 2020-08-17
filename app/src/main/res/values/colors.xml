@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- Main theme colors -->
     <color name="colorPrimary">#fff</color>
     <color name="colorPrimaryDark">#7d7d7d</color>
@@ -20,5 +21,7 @@
     <color name="grey5">#5c5c5c</color>
 
     <color name="default_background_color">#EEEEEE</color>
+
+
 
 </resources>

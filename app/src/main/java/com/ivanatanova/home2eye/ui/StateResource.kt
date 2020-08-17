@@ -1,5 +1,6 @@
 package com.ivanatanova.home2eye.ui
 
+
 data class Loading(val isLoading: Boolean)
 data class Data<T>(val data: Event<T>?, val response: Event<Response>?)
 data class StateError(val response: Response)
@@ -40,6 +41,8 @@ open class Event<out T>(private val content: T) {
      * Returns the content, even if it's already been handled.
      */
     fun peekContent(): T = content
+
+
 
     override fun toString(): String {
         return "Event(content=$content, hasBeenHandled=$hasBeenHandled)"

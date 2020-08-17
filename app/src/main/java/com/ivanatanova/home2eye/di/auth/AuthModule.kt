@@ -1,7 +1,7 @@
 package com.ivanatanova.home2eye.di.auth
 
-import android.app.Application
-import com.ivanatanova.home2eye.api.auth.AuthService
+import android.content.SharedPreferences
+import com.ivanatanova.home2eye.api.auth.OpenApiAuthService
 import com.ivanatanova.home2eye.persistence.AccountPropertiesDao
 import com.ivanatanova.home2eye.persistence.AuthTokenDao
 import com.ivanatanova.home2eye.repository.auth.AuthRepository
@@ -11,13 +11,14 @@ import dagger.Provides
 import retrofit2.Retrofit
 
 @Module
-class AuthModule {
+class AuthModule{
 
     @AuthScope
     @Provides
-    fun provideAuthApiService(retrofit: Retrofit.Builder): AuthService {
-        return retrofit.build()
-            .create(AuthService::class.java)
+    fun provideOpenApiAuthService(retrofitBuilder: Retrofit.Builder): OpenApiAuthService {
+        return retrofitBuilder
+            .build()
+            .create(OpenApiAuthService::class.java)
     }
 
     @AuthScope
@@ -26,19 +27,18 @@ class AuthModule {
         sessionManager: SessionManager,
         authTokenDao: AuthTokenDao,
         accountPropertiesDao: AccountPropertiesDao,
-        openApiAuthService: AuthService
-    ): AuthRepository {
+        openApiAuthService: OpenApiAuthService,
+        preferences: SharedPreferences,
+        editor: SharedPreferences.Editor
+        ): AuthRepository {
         return AuthRepository(
             authTokenDao,
             accountPropertiesDao,
             openApiAuthService,
-            sessionManager
+            sessionManager,
+            preferences,
+            editor
         )
     }
-
-//    @Provides
-//    fun provideSessionManager(authTokenDao: AuthTokenDao, application: Application): SessionManager{
-//        return SessionManager(authTokenDao, application)
-//    }
 
 }

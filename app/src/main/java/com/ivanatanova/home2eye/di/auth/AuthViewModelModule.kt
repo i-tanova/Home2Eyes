@@ -1,7 +1,7 @@
 package com.ivanatanova.home2eye.di.auth
 
 import androidx.lifecycle.ViewModel
-import com.ivanatanova.home2eye.di.viewmodel.ViewModelKey
+import com.ivanatanova.home2eye.di.ViewModelKey
 import com.ivanatanova.home2eye.ui.auth.AuthViewModel
 import dagger.Binds
 import dagger.Module

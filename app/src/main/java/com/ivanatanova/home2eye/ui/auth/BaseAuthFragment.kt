@@ -2,12 +2,15 @@ package com.ivanatanova.home2eye.ui.auth
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.ivanatanova.home2eye.di.viewmodel.ViewModelProviderFactory
-import dagger.android.support.DaggerFragment
+import com.ivanatanova.home2eye.di.Injectable
+import com.ivanatanova.home2eye.viewmodels.ViewModelProviderFactory
 import javax.inject.Inject
 
-abstract class BaseAuthFragment: DaggerFragment(){
+abstract class BaseAuthFragment: Fragment(),
+    Injectable
+{
 
     val TAG: String = "AppDebug"
 
@@ -22,6 +25,38 @@ abstract class BaseAuthFragment: DaggerFragment(){
         viewModel = activity?.run {
             ViewModelProvider(this, providerFactory).get(AuthViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+        cancelActiveJobs()
+    }
+
+    private fun cancelActiveJobs(){
+        viewModel.cancelActiveJobs()
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

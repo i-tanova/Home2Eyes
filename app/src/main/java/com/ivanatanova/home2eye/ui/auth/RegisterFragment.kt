@@ -1,25 +1,19 @@
 package com.ivanatanova.home2eye.ui.auth
 
+
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-
-import com.ivanatanova.home2eye.R
-import com.ivanatanova.home2eye.ui.auth.state.AuthStateEvent
-import com.ivanatanova.home2eye.ui.auth.state.LoginFields
+import com.ivanatanova.home2eye.ui.auth.state.AuthStateEvent.*
 import com.ivanatanova.home2eye.ui.auth.state.RegistrationFields
-import kotlinx.android.synthetic.main.fragment_login.*
-import kotlinx.android.synthetic.main.fragment_login.input_email
-import kotlinx.android.synthetic.main.fragment_login.input_password
+import com.ivanatanova.home2eye.R
 import kotlinx.android.synthetic.main.fragment_register.*
 
-/**
- * A simple [Fragment] subclass.
- */
-class RegisterFragment : BaseAuthFragment()  {
+
+class RegisterFragment : BaseAuthFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,48 +25,45 @@ class RegisterFragment : BaseAuthFragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "RegisterFragment: ${viewModel}")
+
+        register_button.setOnClickListener {
+            register()
+        }
         subscribeObservers()
     }
 
     fun subscribeObservers(){
-        viewModel.viewState.observe(viewLifecycleOwner, Observer {
-            it.registrationFields?.let { registrationFields ->
-                registrationFields.registrationEmail?.let { email ->
-                    input_email.setText(email)
-                }
-
-                registrationFields.registrationUsername?.let {
-                    input_username.setText(it)
-                }
-
-                registrationFields.registrationPassword?.let{
-                    input_password.setText(it)
-                }
-
-                registrationFields.registrationConfirmPassword?.let{
-                    input_password_confirm.setText(it)
-                }
+        viewModel.viewState.observe(viewLifecycleOwner, Observer{viewState ->
+            viewState.registrationFields?.let {
+                it.registration_email?.let{input_email.setText(it)}
+                it.registration_username?.let{input_username.setText(it)}
+                it.registration_password?.let{input_password.setText(it)}
+                it.registration_confirm_password?.let{input_password_confirm.setText(it)}
             }
         })
-
-        register_button.setOnClickListener{
-            register()
-        }
     }
 
     fun register(){
-        viewModel.setStateEvent(AuthStateEvent.RegisterAttemptEvent(input_email.text.toString(),
-            input_username.text.toString(), input_password.text.toString(), input_password_confirm.text.toString()))
+        viewModel.setStateEvent(
+            RegisterAttemptEvent(
+                input_email.text.toString(),
+                input_username.text.toString(),
+                input_password.text.toString(),
+                input_password_confirm.text.toString()
+            )
+        )
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.setRegistrationFields(RegistrationFields(registrationEmail=input_email.text.toString(),
-            registrationUsername = input_username.text.toString(), registrationPassword = input_password.text.toString(),
-            registrationConfirmPassword = input_password_confirm.text.toString()))
+        viewModel.setRegistrationFields(
+            RegistrationFields(
+                input_email.text.toString(),
+                input_username.text.toString(),
+                input_password.text.toString(),
+                input_password_confirm.text.toString()
+            )
+        )
     }
-
-
-
-
 }

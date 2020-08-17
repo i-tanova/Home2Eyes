@@ -1,5 +1,8 @@
-package com.ivanatanova.home2eye.util
+package com.codingwithmitch.openapi.util
+
 import androidx.lifecycle.LiveData
+import com.ivanatanova.home2eye.util.GenericApiResponse
+import com.ivanatanova.home2eye.util.LiveDataCallAdapter
 import retrofit2.CallAdapter
 import retrofit2.CallAdapter.Factory
 import retrofit2.Retrofit
